@@ -17,6 +17,14 @@ export async function CreateNewUser (app: FastifyInstance){
     const { firstName, lastName, password, email } = BodySchema.parse(req.body)
 
     try {
+      const ExistingUser = await prisma.user.findFirst({
+        where: { email : email}
+      })
+      if(ExistingUser){
+        res.status(200).send({message: "Usuário já cadastrado"})
+        return
+      }
+
       const user = await prisma.user.create({
         data: {
           email: email,
