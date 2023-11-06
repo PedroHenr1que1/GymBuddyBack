@@ -6,6 +6,7 @@ import fastifyBcrypt from 'fastify-bcrypt';
 
 import { HealthCheck } from './routes/health/health';
 import { CreateNewUser } from './routes/user/createNewUser';
+import { GetAllUsers } from './routes/user/getAllUsers';
 
 const app = fastify()
 
@@ -18,6 +19,7 @@ app.register(fastifyBcrypt)
 //# ROUTES
 app.register(HealthCheck)
 app.register(CreateNewUser)
+app.register(GetAllUsers)
 
 app.listen({
   port: 3333
