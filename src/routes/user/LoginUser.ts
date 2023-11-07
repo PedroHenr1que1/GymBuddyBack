@@ -15,21 +15,30 @@ export async function LoginUser(app: FastifyInstance){
     const {email, password} = BodySchema.parse(req.body)
 
     try {
-      const ExistingUser = await prisma.user.findFirst({
+      const existingUser = await prisma.user.findFirst({
         where: { email: email }
       })
-      if(!ExistingUser){
+      if(!existingUser){
         res.status(404).send({message: "User not found"})
         return
       }
 
-      if(ExistingUser.password === password){
+      const passwordMatch = await app.bcrypt.compare(password, existingUser.password)
+
+      const user = {
+        id: existingUser.id,
+        firstName: existingUser.firstName,
+        lastName: existingUser.lastName,
+        email: existingUser.email
+      }
+
+      if(passwordMatch){
         res.status(200).send({
           message: "User Authenticated",
-          Object: ExistingUser
+          Object: user
         })
       } else {
-        res.status(404).send({message: "Wrong password"})
+        res.status(404).send({message: "Authentication Failed"})
       }
 
       console.log('User login success');
