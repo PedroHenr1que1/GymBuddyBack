@@ -2,6 +2,8 @@ import { FastifyInstance } from "fastify";
 import { prisma } from '../../lib/prisma';
 import { z } from 'zod';
 
+import * as bcrypt from 'fastify-bcrypt';
+
 export async function LoginUser(app: FastifyInstance){
   const Schema = z
 
