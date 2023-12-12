@@ -9,7 +9,7 @@ export async function LoginUser(app: FastifyInstance){
 
   //Schema do body da requisição
   const BodySchema = Schema.object({
-    email: Schema.string().min(1).email(),
+    email: Schema.string().min(1).email().toLowerCase(),
     password: Schema.string().min(1),
   })
 
@@ -21,7 +21,7 @@ export async function LoginUser(app: FastifyInstance){
         where: { email: email }
       })
       if(!existingUser){
-        res.status(404).send({message: "User not found"})
+        res.status(404).send({message: "Usuário não encontrado"})
         return
       }
 
@@ -36,17 +36,16 @@ export async function LoginUser(app: FastifyInstance){
 
       if(passwordMatch){
         res.status(200).send({
-          message: "User Authenticated",
+          message: "Usuário autenticado",
           Object: user
         })
       } else {
-        res.status(404).send({message: "Authentication Failed"})
+        res.status(404).send({message: "Erro na autenticação"})
       }
 
       console.log('User login success');
     } catch (error) {
       console.error('User login error:', error);
-
     }
 
   })
