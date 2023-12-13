@@ -25,7 +25,7 @@ export async function CreateNewUser (app: FastifyInstance){
         where: { email : email}
       })
       if(ExistingUser){
-        res.status(200).send({message: "User already exists"})
+        res.status(200).send({message: "Usuário já existe!"})
         return
       }
 
@@ -40,9 +40,16 @@ export async function CreateNewUser (app: FastifyInstance){
       
       console.log('New user created');
 
+
+      const UserResponse = {
+        email: email,
+        firstName: firstName,
+        lastName: lastName,
+      }
+
       return {
-        message: 'New user created',
-        object: user,
+        message: 'Novo Usuário criado!',
+        object: UserResponse,
       } 
 
     } catch (error) {
