@@ -12,7 +12,7 @@ export async function CreateNewUser (app: FastifyInstance){
     firstName: Schema.string().min(1),
     lastName: Schema.string().min(1),
     password: Schema.string().min(1),
-    email: Schema.string().min(1).email(),
+    email: Schema.string().min(1).email().toLowerCase(),
   })
 
   app.post('/user/create', async (req, res) => {
@@ -29,7 +29,7 @@ export async function CreateNewUser (app: FastifyInstance){
         return
       }
 
-      const user = await prisma.user.create({
+      await prisma.user.create({
         data: {
           email: email,
           password: passwordHash,
@@ -47,10 +47,11 @@ export async function CreateNewUser (app: FastifyInstance){
         lastName: lastName,
       }
 
-      return {
+      res.status(201).send({
         message: 'Novo Usuário criado!',
         object: UserResponse,
-      } 
+      })
+
 
     } catch (error) {
       console.error('Error creating user:', error);
