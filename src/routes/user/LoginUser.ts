@@ -37,7 +37,7 @@ export async function LoginUser(app: FastifyInstance){
       if(passwordMatch){
         res.status(200).send({
           message: "Usuário autenticado",
-          Object: user
+          object: user
         })
       } else {
         res.status(404).send({message: "Erro na autenticação"})
